@@ -1,10 +1,10 @@
 use std::io;
-use regex::Regex;
 use std::io::{BufRead, stdout, Write};
 use crossterm::{ErrorKind, ExecutableCommand};
 use crossterm::cursor::{MoveTo, RestorePosition, SavePosition};
-use crossterm::terminal::{Clear, ClearType};
 use crossterm::style::{Stylize};
+use crossterm::terminal::{Clear, ClearType};
+use regex::Regex;
 
 fn print_stdout_error(error: ErrorKind) {
     println!("An error occurred: {}", error);
