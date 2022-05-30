@@ -1,23 +1,41 @@
 use crossterm::style::Stylize;
 
-static ERR_INVALID_ARGS: &str = "Invalid arguments. Specify ./binary [--mute|-m]";
+static ERR_INVALID_ARGS: &str = "Invalid arguments. Specify ./binary [--mute|-m] -- <command>";
 
-pub fn read_args(args: Vec<String>) -> bool {
-    println!("{}", args[0]);
+pub struct ParsedArgs {
+    pub mute: bool,
+    pub command: Vec<String>,
+}
+
+pub fn read_args(input_args: Vec<String>) -> ParsedArgs {
+    let mut args = input_args;
+    args.remove(0);
+    let mut parsed_args = ParsedArgs {
+        mute: false,
+        command: Vec::new()
+    };
+    println!("{:?} {}", args, args.len());
     match args.len() {
-        1 => false,
-        2 => {
-            println!("{}", args[1]);
-            if &args[1] == "--mute" || &args[1] == "-m" {
-                true
-            } else {
-                println!("{}", ERR_INVALID_ARGS.red());
-                panic!("{}", ERR_INVALID_ARGS);
+        0 | 1 => {
+            println!("{} 1", ERR_INVALID_ARGS.red());
+            panic!("{} 1", ERR_INVALID_ARGS);
+        },
+        _ => {
+            if &args[0] == "--mute" || &args[1] == "-m" {
+                parsed_args.mute = true;
+                &args.remove(0);
+            }
+            if &args[0] != "--" {
+                println!("{} 2", ERR_INVALID_ARGS.red());
+                panic!("{} 2", ERR_INVALID_ARGS);
+            }
+            &args.remove(0);
+            parsed_args.command = args;
+            if parsed_args.command.len() == 0 {
+                println!("{} 3", ERR_INVALID_ARGS.red());
+                panic!("{} 3", ERR_INVALID_ARGS);
             }
         }
-        _ => {
-            println!("{}", ERR_INVALID_ARGS.red());
-            panic!("{}", ERR_INVALID_ARGS);
-        }
     }
+    parsed_args
 }
