@@ -55,6 +55,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "dockerfilter"
+version = "0.1.0"
+dependencies = [
+ "crossterm",
+ "regex",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.126"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -118,14 +126,6 @@ dependencies = [
  "redox_syscall",
  "smallvec",
  "windows-sys",
-]
-
-[[package]]
-name = "pipefilter"
-version = "0.1.0"
-dependencies = [
- "crossterm",
- "regex",
 ]
 
 [[package]]
