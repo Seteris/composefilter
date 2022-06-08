@@ -21,6 +21,8 @@ fn main() -> io::Result<()> {
     let mut step_string: String = String::from("");
     let mut build_string: String = String::from("");
     let mut build_count = 0;
+    let mut current_step = 0;
+    let mut max_steps = 0;
 
     crossterm_execute(Clear(ClearType::All));
     crossterm_execute(MoveTo(0, 0));
@@ -33,8 +35,8 @@ fn main() -> io::Result<()> {
         if step_regex.is_match(line.as_ref().unwrap()) {
             let line_clone = line.as_ref().unwrap().clone();
             let matches = step_regex.captures(line_clone.as_str()).unwrap();
-            step_string = string_builder::get_info_string(matches);
-        } else if build_regex.is_match(line.as_ref().unwrap()) {
+            (step_string, current_step, max_steps) = string_builder::get_info_string(matches);
+        } else if build_regex.is_match(line.as_ref().unwrap()) && current_step == max_steps  {
             let line_clone = line.as_ref().unwrap().clone();
             let matches = build_regex.captures(line_clone.as_str()).unwrap();
             build_string = string_builder::get_build_string(matches, &mut build_count);
